@@ -1,4 +1,5 @@
 package com.soapwbservice;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,30 +102,30 @@ public class MovieEndpoint {
 		ServiceStatus serviceStatus = new ServiceStatus();
 		// 1. Find if movie available
 		MovieEntity movieFromDB = service.getEntityByTitle(request.getTitle());
-		
-		if(movieFromDB == null) {
+
+		if (movieFromDB == null) {
 			serviceStatus.setStatusCode("NOT FOUND");
 			serviceStatus.setMessage("Movie = " + request.getTitle() + " not found");
-		}else {
-			
+		} else {
+
 			// 2. Get updated movie information from the request
 			movieFromDB.setTitle(request.getTitle());
 			movieFromDB.setCategory(request.getCategory());
 			// 3. update the movie in database
-			
+
 			boolean flag = service.updateEntity(movieFromDB);
-			
-			if(flag == false) {
+
+			if (flag == false) {
 				serviceStatus.setStatusCode("CONFLICT");
-				serviceStatus.setMessage("Exception while updating Entity=" + request.getTitle());;
-			}else {
+				serviceStatus.setMessage("Exception while updating Entity=" + request.getTitle());
+				;
+			} else {
 				serviceStatus.setStatusCode("SUCCESS");
 				serviceStatus.setMessage("Content updated Successfully");
 			}
-			
-			
+
 		}
-		
+
 		response.setServiceStatus(serviceStatus);
 		return response;
 	}
